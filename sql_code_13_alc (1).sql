@@ -1,0 +1,32 @@
+CREATE DATABASE art;
+
+DROP TABLE IF EXISTS art.artist;
+
+CREATE TABLE IF NOT EXISTS art.artist(
+	DNI CHAR(9) NOT NULL PRIMARY KEY,
+    FullName VARCHAR(45) NOT NULL,
+    Email VARCHAR(45)
+);
+
+DROP TABLE IF EXISTS art.art;
+
+CREATE TABLE IF NOT EXISTS art.art (
+	ID  CHAR(5) NOT NULL PRIMARY KEY,
+    Artist_DNI CHAR(9) NOT NULL,
+    Name VARCHAR(45) NOT NULL,
+    Date DATE NOT NULL,
+    Type VARCHAR(45) NOT NULL,
+    Price FLOAT NOT NULL,
+    CONSTRAINT FK_Artist_DNI_2 FOREIGN KEY(Artist_DNI) REFERENCES art.artist(DNI),
+    CONSTRAINT CK_Price CHECK(Price > 0),
+    CONSTRAINT CK_Type CHECK(Type = "Sculpture" OR Type = "Picture")
+);
+
+DROP TABLE IF EXISTS art.phone_numbers;
+
+CREATE TABLE IF NOT EXISTS art.phone_numbers(
+	PhoneNumber VARCHAR(20) NOT NULL,
+    Artist_DNI CHAR(9) NOT NULL,
+    CONSTRAINT PK_PN_ADNI PRIMARY KEY(PhoneNumber, Artist_DNI),
+    CONSTRAINT FK_Artist_DNI FOREIGN KEY(Artist_DNI) REFERENCES art.artist(DNI)
+);
